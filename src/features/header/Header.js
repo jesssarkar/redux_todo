@@ -3,8 +3,13 @@ import { useDispatch } from 'react-redux'
 
 import { saveNewTodo } from '../todos/todosSlice'
 
+const initialValues = {
+  orgin: "",
+  destination: "",
+};
+
 const Header = () => {
-  const [text, setText] = useState('')
+  const [text, setText] = useState(initialValues)
   const [status, setStatus] = useState('idle')
   const dispatch = useDispatch()
 
@@ -18,25 +23,39 @@ const Header = () => {
       setStatus('loading')
       await dispatch(saveNewTodo(trimmedText))
       // And clear out the text input
-      setText('')
+      setText(initialValues)
       setStatus('idle')
     }
   }
 
   let isLoading = status === 'loading'
-  let placeholder = isLoading ? '' : 'What needs to be done?'
   let loader = isLoading ? <div className="loader" /> : null
 
   return (
     <header className="header">
+      <form action="">
       <input
+        label="orgin"
+        name="orgin"
         className="new-todo"
-        placeholder={placeholder}
-        value={text}
+        placeholder='Orgin'
+        value={text.orgin}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={isLoading}
       />
+      <input
+        label="destination"
+        name="destination"
+        className="new-todo"
+        placeholder='Destination'
+        value={text.destination}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        disabled={isLoading}
+      />
+      
+      </form>
       {loader}
     </header>
   )
